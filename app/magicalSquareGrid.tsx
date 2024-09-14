@@ -16,12 +16,12 @@ function isAvailableMove(current_x: number, current_y: number, x: number, y: num
   return possible_moves.includes(current_index - index);
 }
 
-export default function MagicalSquareGrid() {
-  const [grid, setGrid] = useState(Array.from({ length: 10 }, () => Array(10).fill(0)));
-  grid[0][0] = 1;
-  const [current_depth, setCurrentDepth] = useState(2);
-  const [current_x, setX] = useState(0);
-  const [current_y, setY] = useState(0);
+export default function MagicalSquareGrid({ input_depth = 2, input_grid = null, input_x = 0, input_y = 0 }: { input_depth: number, input_grid: Array<Array<number>> | null, input_x: number, input_y: number }) {
+  const [grid, setGrid] = useState(input_grid || Array.from({ length: 10 }, () => Array(10).fill(0)));
+  grid[input_y][input_x] = grid[input_y][input_x] || 1;
+  const [current_depth, setCurrentDepth] = useState(input_depth);
+  const [current_x, setX] = useState(input_x);
+  const [current_y, setY] = useState(input_y);
   function play_move(x: number, y: number): void {
     grid[y][x] = current_depth;
     // doesn't copy the sub-array because we just want react to reload

@@ -1,7 +1,7 @@
+import MagicalSquareGrid from '@/app/magicalSquareGrid';
 import { PrismaClient } from '@prisma/client';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { NextResponse } from 'next/server';
 
 
 const prisma = new PrismaClient();
@@ -24,6 +24,17 @@ async function fetchSolutions(page_size: string, page_index: string): Promise<Ar
   }
 }
 
+function getGridFromSolution(solution: string): Array<Array<number>> {
+  let grid = Array.from({ length: 10 }, () => Array(10).fill(-1))
+  for (let i = 0; i < 100; i++) {
+    const index = Number(solution.slice(i * 2, i * 2 + 2));
+    const y = Math.floor(index / 10)
+    const x = index % 10
+    grid[y][x] = i + 1;
+  }
+  return grid;
+}
+
 export default async function Page({ params }: { params: { page_size: string, page_index: string } }) {
   const { page_size, page_index } = params;
 
@@ -44,12 +55,15 @@ export default async function Page({ params }: { params: { page_size: string, pa
 
   return (
     <div>
-      <h1>Solutions for page {Number(page_index)}</h1>
-      <ul>
-        {solutions.map((solution) => (
-          <li key={solution.id}>{solution.solution}</li>
+      <h1 className='text-center text-2xl mt-5'>Solutions for page {Number(page_index)}</h1>
+      <div className='w-[97vw] flex flex-row flex-wrap justify-around'>
+        {solutions.map((solution, index) => (
+          <div className='w-[34vw] h-[34vw] my-5'>
+            <h3 className='mt-5 text-xl'>{(Number(page_index) - 1) * Number(page_size) + index + 1}.</h3>
+            <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} />
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
