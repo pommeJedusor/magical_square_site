@@ -1,4 +1,6 @@
 import MagicalSquareGrid from '@/app/magicalSquareGrid';
+import NavLayout from '@/app/nav';
+import Pagination from '@/app/pagination';
 import { PrismaClient } from '@prisma/client';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -55,8 +57,10 @@ export default async function Page({ params }: { params: { page_size: string, pa
 
   return (
     <div>
+      <NavLayout />
       <h1 className='text-center text-2xl mt-5'>Solutions for page {Number(page_index)}</h1>
-      <div className='w-[97vw] flex flex-row flex-wrap justify-around'>
+      <Pagination page_size={Number(page_size)} page_index={Number(page_index)} />
+      <div className='w-[97vw] flex flex-row flex-wrap justify-around my-5'>
         {solutions.map((solution, index) => (
           <div className='w-[34vw] h-[34vw] my-5'>
             <h3 className='mt-5 text-xl'>{(Number(page_index) - 1) * Number(page_size) + index + 1}.</h3>
