@@ -9,6 +9,11 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:../magical_square_db.db"
+}
+
+model Solutions {
+  id    Int     @id @default(autoincrement())
+  solution String
 }
