@@ -22,44 +22,51 @@ export default function MagicalSquareGrid() {
   const [current_depth, setCurrentDepth] = useState(2);
   const [current_x, setX] = useState(0);
   const [current_y, setY] = useState(0);
-  const [isGameFinished, setGameFinished] = useState(false);
+  function play_move(x: number, y: number): void {
+    grid[y][x] = current_depth;
+    // doesn't copy the sub-array because we just want react to reload
+    setGrid(grid.slice())
+    setCurrentDepth(current_depth + 1);
+    setX(x);
+    setY(y);
+  }
   return (
     <div className='w-full h-full bg-dark-white flex flex-col'>
       {grid.map((_, index) => (
-        <Row key={index} grid={grid} y={index} current_x={current_x} current_y={current_y} current_depth={current_depth} />
+        <Row key={index} grid={grid} y={index} current_x={current_x} current_y={current_y} current_depth={current_depth} play_move={play_move} />
       ))}
     </div>
   );
 }
 
-function Row({ grid, y, current_x, current_y, current_depth }: { grid: Array<Array<number>>, y: number, current_x: number, current_y: number, current_depth: number }) {
+function Row({ grid, y, current_x, current_y, current_depth, play_move }: { grid: Array<Array<number>>, y: number, current_x: number, current_y: number, current_depth: number, play_move: (x: number, y: number) => void }) {
   return (
     <div className={`w-full h-[10%] flex flex-row`}>
       {grid[y].map((_, index) => (
-        <Square key={index} grid={grid} x={index} y={y} current_x={current_x} current_y={current_y} current_depth={current_depth} />
+        <Square key={index} grid={grid} x={index} y={y} current_x={current_x} current_y={current_y} current_depth={current_depth} play_move={play_move} />
       ))}
     </div>
   );
 }
 
-function Square({ grid, x, y, current_x, current_y, current_depth }: { grid: Array<Array<number>>, x: number, y: number, current_x: number, current_y: number, current_depth: number }) {
+function Square({ grid, x, y, current_x, current_y, current_depth, play_move }: { grid: Array<Array<number>>, x: number, y: number, current_x: number, current_y: number, current_depth: number, play_move: (x: number, y: number) => void }) {
   const [isHovered, setHovered] = useState(false);
   const square_value = grid[y][x];
   if (square_value || !isAvailableMove(current_x, current_y, x, y)) {
     return (
-      <div className="w-[10%] h-full border text-dark-black flex items-center justify-center text-2xl" onMouseEnter={() => setHovered(true)}>
+      <div className="w-[10%] h-full border text-dark-black flex items-center justify-center text-2xl" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
         {square_value ? square_value : null}
       </div>
     );
-  } else if (isHovered) {
+  } else if (!isHovered) {
     return (
-      <div className="w-[10%] h-full border-4 rounded border-cyan-500/80 text-dark-black/50 flex items-center justify-center text-2xl cursor-pointer" onMouseLeave={() => setHovered(false)}>
-        {square_value ? square_value : current_depth}
+      <div className="w-[10%] h-full border-4 rounded border-cyan-500/40 text-dark-black/50 flex items-center justify-center text-2xl cursor-pointer" onMouseEnter={() => setHovered(true)}>
       </div>
     );
   } else {
     return (
-      <div className="w-[10%] h-full border-4 rounded border-cyan-500/40 text-dark-black/50 flex items-center justify-center text-2xl cursor-pointer" onMouseEnter={() => setHovered(true)}>
+      <div className="w-[10%] h-full border-4 rounded border-cyan-500/80 text-dark-black/50 flex items-center justify-center text-2xl cursor-pointer" onMouseLeave={() => setHovered(false)} onClick={() => play_move(x, y)}>
+        {square_value ? square_value : current_depth}
       </div>
     );
   }
