@@ -61,19 +61,38 @@ export default async function Page({ params }: { params: { page_size: string, pa
     notFound();
   }
 
-  return (
-    <div>
-      <NavLayout lang={params.lang} />
-      <h1 className='text-center text-2xl mt-5'>Solutions for page {Number(page_index)}</h1>
-      <Pagination page_size={Number(page_size)} page_index={Number(page_index)} />
-      <div className='w-[97vw] flex flex-row flex-wrap justify-around my-5'>
-        {solutions.map((solution, index) => (
-          <div key={index} className='w-[34vw] h-[34vw] my-5'>
-            <h3 className='mt-5 text-xl'>{(Number(page_index) - 1) * Number(page_size) + index + 1}.</h3>
-            <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} />
-          </div>
-        ))}
+  if (params.lang == "fr") {
+    return (
+      <div>
+        <NavLayout lang={params.lang} />
+        <h1 className='text-center text-2xl mt-5'>Solutions pour la page {Number(page_index)}</h1>
+        <Pagination page_size={Number(page_size)} page_index={Number(page_index)} lang={params.lang} />
+        <div className='w-[97vw] flex flex-row flex-wrap justify-around my-5'>
+          {solutions.map((solution, index) => (
+            <div key={index} className='w-[34vw] h-[34vw] my-5'>
+              <h3 className='mt-5 text-xl'>{(Number(page_index) - 1) * Number(page_size) + index + 1}.</h3>
+              <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} />
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+  else {
+    return (
+      <div>
+        <NavLayout lang={params.lang} />
+        <h1 className='text-center text-2xl mt-5'>Solutions for page {Number(page_index)}</h1>
+        <Pagination page_size={Number(page_size)} page_index={Number(page_index)} lang={params.lang} />
+        <div className='w-[97vw] flex flex-row flex-wrap justify-around my-5'>
+          {solutions.map((solution, index) => (
+            <div key={index} className='w-[34vw] h-[34vw] my-5'>
+              <h3 className='mt-5 text-xl'>{(Number(page_index) - 1) * Number(page_size) + index + 1}.</h3>
+              <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 }
