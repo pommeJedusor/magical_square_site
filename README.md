@@ -1,4 +1,4 @@
-# Set-Up
+# Set-Up (optional)
 you need python installed for it to works
 ```bash
 git clone https://github.com/pommeJedusor/magical_square.git
