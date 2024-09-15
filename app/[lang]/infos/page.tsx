@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import NavLayout from "../nav";
+import NavLayout from "../../nav";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -7,10 +7,10 @@ export const metadata: Metadata = {
   description: "Describe the site and gives interesting infos",
 };
 
-export default async function Page() {
+export default async function Page({ params }: { params: { lang: string } }) {
   return (
     <div>
-      <NavLayout />
+      <NavLayout lang={params.lang} />
       <h1 className="text-dark-white text-center text-4xl my-5">Informations</h1>
       <h2 className="text-dark-white w-4/12 mx-auto text-3xl my-5">Solutions finder</h2>
       <p className="w-4/12 mx-auto text-xl">

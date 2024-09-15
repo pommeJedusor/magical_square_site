@@ -1,15 +1,15 @@
 import { Metadata } from "next";
-import NavLayout from "../nav";
+import NavLayout from "../../nav";
 
 export const metadata: Metadata = {
   title: "Rules",
   description: "Explain the rules of the magical square",
 };
 
-export default async function Page() {
+export default async function Page({ params }: { params: { lang: string } }) {
   return (
     <div>
-      <NavLayout />
+      <NavLayout lang={params.lang} />
       <h1 className="text-dark-white text-center text-4xl my-5">The rules</h1>
       <h2 className="text-dark-white w-4/12 mx-auto text-3xl my-5">Grid Setup</h2>
       <ul className="w-4/12 mx-auto list-disc text-xl">

@@ -43,7 +43,7 @@ function getGridFromSolution(solution: string): Array<Array<number>> {
   return grid;
 }
 
-export default async function Page({ params }: { params: { page_size: string, page_index: string } }) {
+export default async function Page({ params }: { params: { page_size: string, page_index: string, lang: string } }) {
   const { page_size, page_index } = params;
 
   const solutions = await fetchSolutions(page_size, page_index);
@@ -63,7 +63,7 @@ export default async function Page({ params }: { params: { page_size: string, pa
 
   return (
     <div>
-      <NavLayout />
+      <NavLayout lang={params.lang} />
       <h1 className='text-center text-2xl mt-5'>Solutions for page {Number(page_index)}</h1>
       <Pagination page_size={Number(page_size)} page_index={Number(page_index)} />
       <div className='w-[97vw] flex flex-row flex-wrap justify-around my-5'>
