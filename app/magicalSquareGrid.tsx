@@ -60,7 +60,7 @@ function Square({ grid, x, y, current_x, current_y, current_depth, play_move }: 
     );
   } else if (!isHovered) {
     return (
-      <div className="w-[10%] h-full border-4 rounded border-cyan-500/40 text-dark-black/50 flex items-center justify-center text-2xl cursor-pointer" onMouseEnter={() => setHovered(true)}>
+      <div className="w-[10%] h-full border-4 rounded border-cyan-500/40 text-dark-black/50 flex items-center justify-center text-2xl cursor-pointer" onMouseEnter={() => setHovered(true)} onClick={() => play_move(x, y)}>
       </div>
     );
   } else {
