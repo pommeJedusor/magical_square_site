@@ -2,11 +2,17 @@ import MagicalSquareGrid from '@/app/magicalSquareGrid';
 import NavLayout from '@/app/nav';
 import Pagination from '@/app/pagination';
 import { PrismaClient } from '@prisma/client';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 
 const prisma = new PrismaClient();
+
+export const metadata: Metadata = {
+  title: "Solutions",
+  description: "Page where you can see all the solutions I have currently found (there is a lot of them)",
+};
 
 async function fetchSolutions(page_size: string, page_index: string): Promise<Array<{ id: number, solution: string }> | string> {
   const min_index = (Number(page_index) - 1) * Number(page_size) + 1;

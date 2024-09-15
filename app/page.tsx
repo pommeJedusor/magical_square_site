@@ -3,8 +3,8 @@ import MagicalSquareGrid from '@/app/magicalSquareGrid'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: "Home",
-  description: "Home page",
+  title: "Play",
+  description: "Page where you can try to solve the magical square",
 };
 
 export default function HomePage() {
