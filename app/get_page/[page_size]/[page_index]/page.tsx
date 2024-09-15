@@ -18,7 +18,7 @@ async function fetchSolutions(page_size: string, page_index: string): Promise<Ar
   const min_index = (Number(page_index) - 1) * Number(page_size) + 1;
   const max_index = (Number(page_index)) * Number(page_size);
   try {
-    const solutions = await prisma.Solutions.findMany({
+    const solutions = await prisma.solutions.findMany({
       where: {
         id: {
           gte: min_index,
@@ -33,7 +33,7 @@ async function fetchSolutions(page_size: string, page_index: string): Promise<Ar
 }
 
 function getGridFromSolution(solution: string): Array<Array<number>> {
-  let grid = Array.from({ length: 10 }, () => Array(10).fill(-1))
+  const grid = Array.from({ length: 10 }, () => Array(10).fill(-1))
   for (let i = 0; i < 100; i++) {
     const index = Number(solution.slice(i * 2, i * 2 + 2));
     const y = Math.floor(index / 10)
