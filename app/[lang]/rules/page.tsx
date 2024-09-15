@@ -13,8 +13,8 @@ export default async function Page({ params }: { params: { lang: string } }) {
       <div>
         <NavLayout lang={params.lang} />
         <h1 className="text-dark-white text-center text-4xl my-5">Les règles</h1>
-        <h2 className="text-dark-white w-4/12 mx-auto text-3xl my-5">La grille</h2>
-        <ul className="w-4/12 mx-auto list-disc text-xl">
+        <h2 className="text-dark-white w-10/12 lg:w-4/12 mx-auto text-3xl my-5">La grille</h2>
+        <ul className="w-10/12 lg:w-4/12 mx-auto list-disc text-xl">
           <li className="my-2">
             <span className="font-black">Taille</span>: Le jeu se joue sur une grille de 10 rangées et 10 colonnes, soit un total de 100 cases.
           </li>
@@ -23,8 +23,8 @@ export default async function Page({ params }: { params: { lang: string } }) {
           </li>
         </ul>
 
-        <h2 className="text-dark-white w-4/12 mx-auto text-3xl my-5">Placement des chiffres</h2>
-        <ul className="w-4/12 mx-auto list-disc text-xl">
+        <h2 className="text-dark-white w-10/12 lg:w-4/12 mx-auto text-3xl my-5">Placement des chiffres</h2>
+        <ul className="w-10/12 lg:w-4/12 mx-auto list-disc text-xl">
           <li className="my-2">
             <span className="font-black">Ordre des chiffres</span>: Après avoir placé '1', vous placerez le chiffre suivant, qui est '2'. Ensuite, vous placerez '3', '4', et ainsi de suite, jusqu'à '100'.
           </li>
@@ -41,8 +41,8 @@ export default async function Page({ params }: { params: { lang: string } }) {
           </li>
         </ul>
 
-        <h2 className="text-dark-white w-4/12 mx-auto text-3xl my-5">Gagner et perdre</h2>
-        <ul className="w-4/12 mx-auto list-disc text-xl">
+        <h2 className="text-dark-white w-10/12 lg:w-4/12 mx-auto text-3xl my-5">Gagner et perdre</h2>
+        <ul className="w-10/12 lg:w-4/12 mx-auto list-disc text-xl">
           <li className="my-2">
             <span className="font-black">Condition de victoire</span>: Vous gagnez le jeu si vous avez placé le chiffre '100' et rempli toute la grille avec des chiffres sans enfreindre les règles de mouvement.
           </li>
@@ -57,8 +57,8 @@ export default async function Page({ params }: { params: { lang: string } }) {
       <div>
         <NavLayout lang={params.lang} />
         <h1 className="text-dark-white text-center text-4xl my-5">The rules</h1>
-        <h2 className="text-dark-white w-4/12 mx-auto text-3xl my-5">Grid Setup</h2>
-        <ul className="w-4/12 mx-auto list-disc text-xl">
+        <h2 className="text-dark-white w-10/12 lg:w-4/12 mx-auto text-3xl my-5">Grid Setup</h2>
+        <ul className="w-10/12 lg:w-4/12 mx-auto list-disc text-xl">
           <li className="my-2">
             <span className="font-black">Size</span>: The game is played on a grid that has 10 rows and 10 columns, making a total of 100 squares.
           </li>
@@ -67,8 +67,8 @@ export default async function Page({ params }: { params: { lang: string } }) {
           </li>
         </ul>
 
-        <h2 className="text-dark-white w-4/12 mx-auto text-3xl my-5">Placing Numbers</h2>
-        <ul className="w-4/12 mx-auto list-disc text-xl">
+        <h2 className="text-dark-white w-10/12 lg:w-4/12 mx-auto text-3xl my-5">Placing Numbers</h2>
+        <ul className="w-10/12 lg:w-4/12 mx-auto list-disc text-xl">
           <li className="my-2">
             <span className="font-black">Increasing Numbers</span>: After placing '1', you will place the next number, which is '2'. Then you will place '3', '4', and so on, all the way up to '100'
           </li>
@@ -85,8 +85,8 @@ export default async function Page({ params }: { params: { lang: string } }) {
           </li>
         </ul>
 
-        <h2 className="text-dark-white w-4/12 mx-auto text-3xl my-5">Winning and Losing</h2>
-        <ul className="w-4/12 mx-auto list-disc text-xl">
+        <h2 className="text-dark-white w-10/12 lg:w-4/12 mx-auto text-3xl my-5">Winning and Losing</h2>
+        <ul className="w-10/12 lg:w-4/12 mx-auto list-disc text-xl">
           <li className="my-2">
             <span className="font-black">Winning Condition</span>: You win the game if you have pute the number '100' and filled the entire grid with numbers without breaking the movement rules.
           </li>
