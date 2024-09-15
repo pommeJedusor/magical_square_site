@@ -69,8 +69,8 @@ export default async function Page({ params }: { params: { page_size: string, pa
         <Pagination page_size={Number(page_size)} page_index={Number(page_index)} lang={params.lang} />
         <div className='w-[97vw] flex flex-row flex-wrap justify-around my-5'>
           {solutions.map((solution, index) => (
-            <div key={index} className='w-[34vw] h-[34vw] my-5'>
-              <h3 className='mt-5 text-xl'>{(Number(page_index) - 1) * Number(page_size) + index + 1}.</h3>
+            <div key={index} className='lg:w-[34vw] lg:h-[34vw] w-[68vw] h-[68vw] my-5'>
+              <h3 className='text-dark-black mt-5 text-xl'>{format_number(((Number(page_index) - 1) * Number(page_size) + index + 1).toString())}.</h3>
               <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} />
             </div>
           ))}
@@ -86,7 +86,7 @@ export default async function Page({ params }: { params: { page_size: string, pa
         <Pagination page_size={Number(page_size)} page_index={Number(page_index)} lang={params.lang} />
         <div className='w-[97vw] flex flex-row flex-wrap justify-around my-5'>
           {solutions.map((solution, index) => (
-            <div key={index} className='w-[34vw] h-[34vw] my-5'>
+            <div key={index} className='lg:w-[34vw] lg:h-[34vw] w-[68vw] h-[68vw] my-5'>
               <h3 className='mt-5 text-xl'>{(Number(page_index) - 1) * Number(page_size) + index + 1}.</h3>
               <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} />
             </div>
