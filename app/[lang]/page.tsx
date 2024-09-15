@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage({ params }: { params: { lang: string } }) {
+  if (params.lang == "fr") metadata.title = "Jouer";
   return (
     <div>
       <NavLayout lang={params.lang} />

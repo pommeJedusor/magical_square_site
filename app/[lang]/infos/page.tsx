@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 
 export default async function Page({ params }: { params: { lang: string } }) {
   if (params.lang == "fr") {
+    metadata.title = "Information sur le site";
     return (
       <div>
         <NavLayout lang={params.lang} />
