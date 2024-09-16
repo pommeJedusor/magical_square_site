@@ -14,6 +14,11 @@ export const metadata: Metadata = {
   description: "Page where you can see all the solutions I have currently found (there is a lot of them)",
 };
 
+function format_number(number: string): string {
+  if (number.length <= 3) return number;
+  return format_number(number.slice(0, -3)) + " " + number.slice(-3);
+}
+
 async function fetchSolutions(page_size: string, page_index: string): Promise<Array<{ id: number, solution: string }> | string> {
   const min_index = (Number(page_index) - 1) * Number(page_size) + 1;
   const max_index = (Number(page_index)) * Number(page_size);
@@ -87,7 +92,7 @@ export default async function Page({ params }: { params: { page_size: string, pa
         <div className='w-[97vw] flex flex-row flex-wrap justify-around my-5'>
           {solutions.map((solution, index) => (
             <div key={index} className='lg:w-[34vw] lg:h-[34vw] w-[68vw] h-[68vw] my-5'>
-              <h3 className='mt-5 text-xl'>{(Number(page_index) - 1) * Number(page_size) + index + 1}.</h3>
+              <h3 className='mt-5 text-xl'>{format_number(((Number(page_index) - 1) * Number(page_size) + index + 1).toString())}.</h3>
               <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} />
             </div>
           ))}
