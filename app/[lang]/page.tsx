@@ -1,5 +1,5 @@
 import NavLayout from '@/app/nav'
-import MagicalSquareGrid from '@/app/magicalSquareGrid'
+import UserMagicalSquareGrid from '@/app/userMagicalSquareGrid'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -13,8 +13,8 @@ export default function HomePage({ params }: { params: { lang: string } }) {
     <div>
       <NavLayout lang={params.lang} />
       <div className='w-[90vh] h-[90vh] max-w-[90vw] max-h-[90vw] mx-auto my-5'>
-        <MagicalSquareGrid input_depth={2} input_grid={null} input_x={0} input_y={0} />
-      </div>
-    </div>
+        <UserMagicalSquareGrid />
+      </div >
+    </div >
   );
 }

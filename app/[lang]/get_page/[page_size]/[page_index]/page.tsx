@@ -5,6 +5,7 @@ import { PrismaClient } from '@prisma/client';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { MoveTree } from "../../../../../utils/MoveTree";
 
 
 const prisma = new PrismaClient();
@@ -13,6 +14,11 @@ export const metadata: Metadata = {
   title: "Solutions",
   description: "Page where you can see all the solutions I have currently found (there is a lot of them)",
 };
+
+function format_number(number: string): string {
+  if (number.length <= 3) return number;
+  return format_number(number.slice(0, -3)) + " " + number.slice(-3);
+}
 
 async function fetchSolutions(page_size: string, page_index: string): Promise<Array<{ id: number, solution: string }> | string> {
   const min_index = (Number(page_index) - 1) * Number(page_size) + 1;
@@ -65,13 +71,13 @@ export default async function Page({ params }: { params: { page_size: string, pa
     return (
       <div>
         <NavLayout lang={params.lang} />
-        <h1 className='text-center text-2xl mt-5'>Solutions pour la page {Number(page_index)}</h1>
+        <h1 className='text-light-grey text-center text-2xl mt-5'>Solutions pour la page {Number(page_index)}</h1>
         <Pagination page_size={Number(page_size)} page_index={Number(page_index)} lang={params.lang} />
         <div className='w-[97vw] flex flex-row flex-wrap justify-around my-5'>
           {solutions.map((solution, index) => (
-            <div key={index} className='w-[34vw] h-[34vw] my-5'>
-              <h3 className='mt-5 text-xl'>{(Number(page_index) - 1) * Number(page_size) + index + 1}.</h3>
-              <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} />
+            <div key={index} className='lg:w-[34vw] lg:h-[34vw] w-[68vw] h-[68vw] my-5'>
+              <h3 className='text-dark-white mt-5 text-xl'>{format_number(((Number(page_index) - 1) * Number(page_size) + index + 1).toString())}.</h3>
+              <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} moves={undefined} />
             </div>
           ))}
         </div>
@@ -82,13 +88,13 @@ export default async function Page({ params }: { params: { page_size: string, pa
     return (
       <div>
         <NavLayout lang={params.lang} />
-        <h1 className='text-center text-2xl mt-5'>Solutions for page {Number(page_index)}</h1>
+        <h1 className='text-light-grey text-center text-2xl mt-5'>Solutions for page {Number(page_index)}</h1>
         <Pagination page_size={Number(page_size)} page_index={Number(page_index)} lang={params.lang} />
         <div className='w-[97vw] flex flex-row flex-wrap justify-around my-5'>
           {solutions.map((solution, index) => (
             <div key={index} className='lg:w-[34vw] lg:h-[34vw] w-[68vw] h-[68vw] my-5'>
-              <h3 className='mt-5 text-xl'>{(Number(page_index) - 1) * Number(page_size) + index + 1}.</h3>
-              <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} />
+              <h3 className='text-dark-white mt-5 text-xl'>{format_number(((Number(page_index) - 1) * Number(page_size) + index + 1).toString())}.</h3>
+              <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} moves={undefined} />
             </div>
           ))}
         </div>
