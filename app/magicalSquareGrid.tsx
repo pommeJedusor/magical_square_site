@@ -42,23 +42,23 @@ export default function MagicalSquareGrid({ input_depth, input_grid, input_x, in
   return (
     <div className='w-full h-full bg-dark-white flex flex-col'>
       {grid.map((_, index) => (
-        <Row key={index} grid={grid} y={index} current_x={current_x} current_y={current_y} current_depth={current_depth} play_move={play_move} />
+        <Row key={index} grid={grid} y={index} current_x={current_x} current_y={current_y} current_depth={current_depth} play_move={play_move} moves={moves} />
       ))}
     </div>
   );
 }
 
-function Row({ grid, y, current_x, current_y, current_depth, play_move }: { grid: Array<Array<number>>, y: number, current_x: number, current_y: number, current_depth: number, play_move: (x: number, y: number) => void }) {
+function Row({ grid, y, current_x, current_y, current_depth, play_move, moves }: { grid: Array<Array<number>>, y: number, current_x: number, current_y: number, current_depth: number, play_move: (x: number, y: number) => void, moves: MoveTree | undefined }) {
   return (
     <div className={`w-full h-[10%] flex flex-row`}>
       {grid[y].map((_, index) => (
-        <Square key={index} grid={grid} x={index} y={y} current_x={current_x} current_y={current_y} current_depth={current_depth} play_move={play_move} />
+        <Square key={index} grid={grid} x={index} y={y} current_x={current_x} current_y={current_y} current_depth={current_depth} play_move={play_move} moves={moves} />
       ))}
     </div>
   );
 }
 
-function Square({ grid, x, y, current_x, current_y, current_depth, play_move }: { grid: Array<Array<number>>, x: number, y: number, current_x: number, current_y: number, current_depth: number, play_move: (x: number, y: number) => void }) {
+function Square({ grid, x, y, current_x, current_y, current_depth, play_move, moves }: { grid: Array<Array<number>>, x: number, y: number, current_x: number, current_y: number, current_depth: number, play_move: (x: number, y: number) => void, moves: MoveTree | undefined }) {
   const [isHovered, setHovered] = useState(false);
   const square_value = grid[y][x];
   if (square_value || !isAvailableMove(current_x, current_y, x, y)) {
@@ -67,7 +67,21 @@ function Square({ grid, x, y, current_x, current_y, current_depth, play_move }: 
         {square_value ? square_value : null}
       </div>
     );
-  } else if (!isHovered) {
+  }
+  else if (!isHovered && moves?.current.children.find((el) => el.x === x && el.y === y)) {
+    return (
+      <div className="w-[10%] h-full border-4 rounded border-red-500/40 text-dark-black/50 flex items-center justify-center text-2xl cursor-pointer" onMouseEnter={() => setHovered(true)} onClick={() => play_move(x, y)}>
+      </div>
+    );
+  }
+  else if (moves?.current.children.find((el) => el.x === x && el.y === y)) {
+    return (
+      <div className="w-[10%] h-full border-4 rounded border-red-500/80 text-dark-black/50 flex items-center justify-center text-2xl cursor-pointer" onMouseLeave={() => setHovered(false)} onClick={() => play_move(x, y)}>
+        {square_value ? square_value : current_depth}
+      </div>
+    );
+  }
+  else if (!isHovered) {
     return (
       <div className="w-[10%] h-full border-4 rounded border-cyan-500/40 text-dark-black/50 flex items-center justify-center text-2xl cursor-pointer" onMouseEnter={() => setHovered(true)} onClick={() => play_move(x, y)}>
       </div>
