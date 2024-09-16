@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function isAvailableMove(current_x: number, current_y: number, x: number, y: number): boolean {
   const current_index = current_y * 10 + current_x;
@@ -16,12 +16,19 @@ function isAvailableMove(current_x: number, current_y: number, x: number, y: num
   return possible_moves.includes(current_index - index);
 }
 
-export default function MagicalSquareGrid({ input_depth, input_grid, input_x, input_y }: { input_depth: number, input_grid: Array<Array<number>> | null, input_x: number, input_y: number }) {
+export default function MagicalSquareGrid({ input_depth, input_grid, input_x, input_y, moves }: { input_depth: number, input_grid: Array<Array<number>> | null, input_x: number, input_y: number, moves: number[][] }) {
   const [grid, setGrid] = useState(input_grid || Array.from({ length: 10 }, () => Array(10).fill(0)));
   grid[input_y][input_x] = grid[input_y][input_x] || 1;
   const [current_depth, setCurrentDepth] = useState(input_depth);
   const [current_x, setX] = useState(input_x);
   const [current_y, setY] = useState(input_y);
+
+  useEffect(() => {
+    setCurrentDepth(input_depth);
+    setX(input_x);
+    setY(input_y);
+  }, [input_grid, input_depth, input_x, input_y]);
+
   function play_move(x: number, y: number): void {
     grid[y][x] = current_depth;
     // doesn't copy the sub-array because we just want react to reload
@@ -29,6 +36,7 @@ export default function MagicalSquareGrid({ input_depth, input_grid, input_x, in
     setCurrentDepth(current_depth + 1);
     setX(x);
     setY(y);
+    moves.push([x, y]);
   }
   return (
     <div className='w-full h-full bg-dark-white flex flex-col'>
