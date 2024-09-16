@@ -1,25 +1,26 @@
 "use client"
 import { useState } from "react";
 import MagicalSquareGrid from "./magicalSquareGrid";
+import { MoveTree } from "../utils/MoveTree";
 
 export default function UserMagicalSquareGrid() {
   const [grid, setGrid] = useState(Array.from({ length: 10 }, () => Array(10).fill(0)));
   const [current_depth, setCurrentDepth] = useState(2);
   const [current_x, setX] = useState(0);
   const [current_y, setY] = useState(0);
-  const [moves, setMoves] = useState([[0, 0]]);
+  const [moves, setMoves] = useState(new MoveTree());
   grid[current_y][current_x] = grid[current_y][current_x] || 1;
 
   function cancelMove() {
-    if (moves.length <= 1) return;
-    //const last_move = moves.pop();
-    const last_move = moves.pop() as number[];
-    grid[last_move[1]][last_move[0]] = 0;
+    if (moves.current.depth <= 1) return;
+    let last_move = moves.current;
+    grid[last_move.y][last_move.x] = 0;
+    moves.cancelMove();
+    last_move = moves.current;
     setGrid(grid.slice());
-    setCurrentDepth(moves.length + 1);
-    setX(moves[moves.length - 1][0])
-    setY(moves[moves.length - 1][1])
-    setMoves(moves.slice());
+    setCurrentDepth(moves.current.depth + 1);
+    setX(last_move.x);
+    setY(last_move.y);
   }
 
 

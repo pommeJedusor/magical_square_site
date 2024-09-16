@@ -1,4 +1,5 @@
 "use client"
+import { MoveTree } from "../utils/MoveTree";
 import { useEffect, useState } from "react";
 
 function isAvailableMove(current_x: number, current_y: number, x: number, y: number): boolean {
@@ -16,7 +17,7 @@ function isAvailableMove(current_x: number, current_y: number, x: number, y: num
   return possible_moves.includes(current_index - index);
 }
 
-export default function MagicalSquareGrid({ input_depth, input_grid, input_x, input_y, moves }: { input_depth: number, input_grid: Array<Array<number>> | null, input_x: number, input_y: number, moves: number[][] }) {
+export default function MagicalSquareGrid({ input_depth, input_grid, input_x, input_y, moves }: { input_depth: number, input_grid: Array<Array<number>> | null, input_x: number, input_y: number, moves: MoveTree | undefined }) {
   const [grid, setGrid] = useState(input_grid || Array.from({ length: 10 }, () => Array(10).fill(0)));
   grid[input_y][input_x] = grid[input_y][input_x] || 1;
   const [current_depth, setCurrentDepth] = useState(input_depth);
@@ -36,7 +37,7 @@ export default function MagicalSquareGrid({ input_depth, input_grid, input_x, in
     setCurrentDepth(current_depth + 1);
     setX(x);
     setY(y);
-    moves.push([x, y]);
+    moves?.addMove(x, y)
   }
   return (
     <div className='w-full h-full bg-dark-white flex flex-col'>
