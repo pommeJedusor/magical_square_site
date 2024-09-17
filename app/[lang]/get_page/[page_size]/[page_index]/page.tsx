@@ -85,7 +85,7 @@ export default async function Page({ params }: { params: { page_size: string, pa
           {solutions.map((solution, index) => (
             <div key={index} className='lg:w-[34vw] lg:h-[34vw] w-[68vw] h-[68vw] my-5'>
               <h3 className='text-dark-white mt-5 text-xl'>{format_number(((Number(page_index) - 1) * Number(page_size) + index + 1).toString())}.</h3>
-              <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} moves={undefined} />
+              <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} input_moves={undefined} />
             </div>
           ))}
         </div>
@@ -102,7 +102,7 @@ export default async function Page({ params }: { params: { page_size: string, pa
           {solutions.map((solution, index) => (
             <div key={index} className='lg:w-[34vw] lg:h-[34vw] w-[68vw] h-[68vw] my-5'>
               <h3 className='text-dark-white mt-5 text-xl'>{format_number(((Number(page_index) - 1) * Number(page_size) + index + 1).toString())}.</h3>
-              <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} moves={undefined} />
+              <MagicalSquareGrid key={solution.solution} input_depth={2} input_grid={getGridFromSolution(solution.solution)} input_x={5} input_y={5} input_moves={undefined} />
             </div>
           ))}
         </div>
