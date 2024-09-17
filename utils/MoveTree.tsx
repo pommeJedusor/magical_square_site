@@ -28,14 +28,17 @@ export class MoveTree {
   }
 
   addMove(x: number, y: number) {
-    const same_move = this.current.children.find((el) => el.x === x && el.y === y)
-    if (same_move) {
-      this.current = same_move;
-    }
-    else {
+    const index_same_move = this.current.children.findIndex((el) => el.x === x && el.y === y)
+
+    if (index_same_move === -1) {
       const new_move = new Node(x, y, this.current.depth + 1, this.current);
       this.current.children.push(new_move);
       this.current = new_move;
+      return
     }
+
+    // remove the child if found and put it at the end
+    this.current = this.current.children.splice(index_same_move, 1)[0];
+    this.current.parent?.children.push(this.current);
   }
 }
