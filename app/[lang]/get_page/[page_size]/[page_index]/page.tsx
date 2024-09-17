@@ -49,16 +49,25 @@ function getGridFromSolution(solution: string): Array<Array<number>> {
 }
 
 export default async function Page({ params }: { params: { page_size: string, page_index: string, lang: string } }) {
-  const { page_size, page_index } = params;
+  const { page_size, page_index, lang } = params;
 
-  const solutions = await fetchSolutions(page_size, page_index);
+  let error_message = "";
+  if (Number(page_size) > 100) {
+    error_message = "You can't ask for more than a 100 solutions by page";
+  }
+
+  const solutions = error_message || await fetchSolutions(page_size, page_index);
 
   // error handling
-  if (typeof solutions == "string") {
+  if (!error_message && typeof solutions == "string") {
+    error_message = "Didn't achieve to retrive the datas you were looking for :(";
+  }
+  if (error_message || typeof solutions == "string") {
     return (
       <div>
-        <h1>Didn't achieve to retrive the datas you were looking for :(</h1>
-        <p>Either come back to the previous url or go to <Link href="/" >Home</Link></p>
+        <NavLayout lang={lang} />
+        <h1 className='text-light-grey text-center text-2xl mt-5'>{error_message}</h1>
+        <p className='text-light-grey text-center text-2xl mt-5'>Either come back to the previous url or go to <Link href="/" >Home</Link></p>
       </div >
     );
   }
