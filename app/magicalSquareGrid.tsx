@@ -61,7 +61,14 @@ function Row({ grid, y, current_x, current_y, current_depth, play_move, moves }:
 function Square({ grid, x, y, current_x, current_y, current_depth, play_move, moves }: { grid: Array<Array<number>>, x: number, y: number, current_x: number, current_y: number, current_depth: number, play_move: (x: number, y: number) => void, moves: MoveTree | undefined }) {
   const [isHovered, setHovered] = useState(false);
   const square_value = grid[y][x];
-  if (square_value || !isAvailableMove(current_x, current_y, x, y)) {
+  if (square_value > 0 && square_value < 100 && y == moves?.current.y && x == moves?.current.x) {
+    return (
+      <div className="w-[10%] h-full border text-green-600 flex items-center justify-center font-semibold xl:text-2xl lg:text-xl sm:text-lg text-xs" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+        {square_value ? square_value : null}
+      </div>
+    );
+  }
+  else if (square_value || !isAvailableMove(current_x, current_y, x, y)) {
     return (
       <div className="w-[10%] h-full border text-dark-black flex items-center justify-center xl:text-2xl lg:text-xl sm:text-lg text-xs" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
         {square_value ? square_value : null}
