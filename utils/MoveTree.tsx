@@ -1,4 +1,4 @@
-class Node {
+export class Node {
   x: number;
   y: number;
   depth: number;
@@ -55,5 +55,33 @@ export class MoveTree {
       str += this.toString(node.children[i]) + "<";
     }
     return str;
+  }
+
+  static fromString(tree: string, location: string) {
+    const move_tree = new MoveTree();
+    const str_nodes = tree.split(";");
+
+    for (let i = 1; i < str_nodes.length; i++) {
+      const str_node = str_nodes[i];
+
+      // go back before making the new branch if necessary
+      const nb_backward = str_node.split("<").length - 1;
+      for (let i = 0; i < nb_backward; i++) {
+        move_tree.cancelMove();
+      }
+
+      // make the move
+      const [x, y] = str_node.replaceAll("<", "").split(",");
+      if (x && y) move_tree.addMove(Number(x), Number(y));
+    }
+
+    const nodes_location = location.split(";");
+    for (const node_location of nodes_location) {
+      if (!node_location) continue;
+      const [x, y] = node_location.split(",");
+      if (x && y) move_tree.addMove(Number(x), Number(y));
+    }
+
+    return move_tree;
   }
 }

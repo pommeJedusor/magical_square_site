@@ -1,7 +1,7 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MagicalSquareGrid from "./magicalSquareGrid";
-import { MoveTree } from "../utils/MoveTree";
+import { MoveTree, Node } from "../utils/MoveTree";
 import Image from "next/image"
 
 export default function UserMagicalSquareGrid() {
@@ -9,8 +9,34 @@ export default function UserMagicalSquareGrid() {
   const [current_depth, setCurrentDepth] = useState(2);
   const [current_x, setX] = useState(0);
   const [current_y, setY] = useState(0);
-  const [moves] = useState(new MoveTree());
+  const [moves, setMoves] = useState(new MoveTree());
   grid[current_y][current_x] = grid[current_y][current_x] || 1;
+
+  // reload MoveTree
+  useEffect(() => {
+    const str_tree = sessionStorage.getItem("magical_square_grid_tree")
+    const str_location = sessionStorage.getItem("magical_square_grid_location");
+    if (str_tree && str_tree !== moves.toString()) {
+      const new_moves = MoveTree.fromString(str_tree, str_location || "");
+
+      //reload grid
+      const temp_moves = [new_moves.current];
+      let temp_node = new_moves.current.parent;
+      while (temp_node) {
+        temp_moves.push(temp_node);
+        temp_node = temp_node.parent;
+      }
+      for (let i = 1; i <= temp_moves.length; i++) {
+        const move = temp_moves.at(-i) as Node;
+        grid[move.y][move.x] = i;
+      }
+      setGrid(grid.slice());
+      setMoves(new_moves);
+      setCurrentDepth(new_moves.current.depth + 1);
+      setX(new_moves.current.x);
+      setY(new_moves.current.y);
+    }
+  }, []);
 
   function cancelMove() {
     if (moves.current.depth <= 1) return;
@@ -52,7 +78,7 @@ export default function UserMagicalSquareGrid() {
         </button>
       </div>
       <div className='w-[90%] h-[90%] mx-auto my-5'>
-        <MagicalSquareGrid input_depth={current_depth} input_grid={grid} input_x={current_x} input_y={current_y} moves={moves} />
+        <MagicalSquareGrid input_depth={current_depth} input_grid={grid} input_x={current_x} input_y={current_y} input_moves={moves} />
       </div>
     </div>
   );
