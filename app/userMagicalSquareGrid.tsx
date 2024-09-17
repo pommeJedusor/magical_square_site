@@ -22,6 +22,8 @@ export default function UserMagicalSquareGrid() {
     setCurrentDepth(moves.current.depth + 1);
     setX(last_move.x);
     setY(last_move.y);
+    sessionStorage.setItem("magical_square_grid_tree", moves.toString());
+    sessionStorage.setItem("magical_square_grid_location", moves.current.toString());
   }
 
   function cancelCancel() {
@@ -34,6 +36,8 @@ export default function UserMagicalSquareGrid() {
     setCurrentDepth(moves.current.depth + 1);
     setX(next_move.x);
     setY(next_move.y);
+    sessionStorage.setItem("magical_square_grid_tree", moves.toString());
+    sessionStorage.setItem("magical_square_grid_location", moves.current.toString());
   }
 
 

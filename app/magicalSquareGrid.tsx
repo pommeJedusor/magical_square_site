@@ -38,6 +38,10 @@ export default function MagicalSquareGrid({ input_depth, input_grid, input_x, in
     setX(x);
     setY(y);
     moves?.addMove(x, y)
+    if (moves) {
+      sessionStorage.setItem("magical_square_grid_tree", moves.toString());
+      sessionStorage.setItem("magical_square_grid_location", moves.current.toString());
+    }
   }
   return (
     <div className='w-full h-full bg-dark-white flex flex-col'>

@@ -11,6 +11,11 @@ class Node {
     this.parent = parent;
     this.children = [];
   }
+
+  toString(): string {
+    if (!this.parent) return "";
+    return this.parent.toString() + `${this.x},${this.y};`;
+  }
 }
 
 export class MoveTree {
@@ -40,5 +45,15 @@ export class MoveTree {
     // remove the child if found and put it at the end
     this.current = this.current.children.splice(index_same_move, 1)[0];
     this.current.parent?.children.push(this.current);
+  }
+
+  // "{x},{y};<{x},{y};"
+  // the '<' means go back from one (if there is multiple following go back of the number)
+  toString(node: Node = this.root): string {
+    let str = `${node.x},${node.y};`;
+    for (let i = 0; i < node.children.length; i++) {
+      str += this.toString(node.children[i]) + "<";
+    }
+    return str;
   }
 }
