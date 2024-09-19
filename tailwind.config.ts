@@ -17,6 +17,9 @@ const config: Config = {
         "light-grey": "#8F96A6",
         "dark-white": "#C7CFD9",
       },
+      rotate: {
+        '270': '270deg',
+      },
     },
   },
   plugins: [],

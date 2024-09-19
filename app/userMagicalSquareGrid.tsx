@@ -66,6 +66,14 @@ export default function UserMagicalSquareGrid() {
     sessionStorage.setItem("magical_square_grid_location", moves.current.toString());
   }
 
+  function refresh() {
+    if (confirm("Reset the game?")) {
+      sessionStorage.removeItem("magical_square_grid_tree");
+      sessionStorage.removeItem("magical_square_grid_location");
+      location.reload();
+    }
+  }
+
 
   return (
     <div className='w-full h-full mx-auto my-5'>
@@ -77,8 +85,15 @@ export default function UserMagicalSquareGrid() {
           <Image className="w-10" width={500} height={500} src="/arrow-u-up-right-svgrepo-com.svg" alt="arrow going backward" />
         </button>
       </div>
-      <div className='w-[90%] h-[90%] mx-auto my-5'>
-        <MagicalSquareGrid input_depth={current_depth} input_grid={grid} input_x={current_x} input_y={current_y} input_moves={moves} />
+      <div className='w-[90%] h-[90%] mx-auto my-5 flex flex-row items-center'>
+        <div className="w-12 h-12 ml-5 p-1">
+        </div>
+        <div className='w-[90%] h-[90%] mx-auto my-5'>
+          <MagicalSquareGrid input_depth={current_depth} input_grid={grid} input_x={current_x} input_y={current_y} input_moves={moves} />
+        </div>
+        <button onClick={refresh} type="button" className="flex items-center w-12 h-12 ml-5 focus:outline-none focus:ring-4 focus:ring-sky-300 dark:focus:ring-sky-800 hover:outline-none hover:ring-4 hover:ring-sky-300 dark:hover:ring-sky-800 hover:bg-sky-600 bg-sky-700 p-1 rounded">
+          <Image className="w-10 h-10 mx-auto rotate-270" width={500} height={500} src="/refresh-svgrepo-com.svg" alt="arrow going backward" />
+        </button>
       </div>
     </div>
   );
