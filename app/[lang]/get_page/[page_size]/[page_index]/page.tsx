@@ -1,3 +1,4 @@
+import ArrowUp from '@/app/arrowUp';
 import MagicalSquareGrid from '@/app/magicalSquareGrid';
 import NavLayout from '@/app/nav';
 import Pagination from '@/app/pagination';
@@ -89,6 +90,7 @@ export default async function Page({ params }: { params: { page_size: string, pa
             </div>
           ))}
         </div>
+        <ArrowUp />
       </div>
     );
   }
@@ -106,6 +108,7 @@ export default async function Page({ params }: { params: { page_size: string, pa
             </div>
           ))}
         </div>
+        <ArrowUp />
       </div>
     );
   }
