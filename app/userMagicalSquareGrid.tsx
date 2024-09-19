@@ -4,7 +4,7 @@ import MagicalSquareGrid from "./magicalSquareGrid";
 import { MoveTree, Node } from "../utils/MoveTree";
 import Image from "next/image"
 
-export default function UserMagicalSquareGrid() {
+export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
   const [grid, setGrid] = useState(Array.from({ length: 10 }, () => Array(10).fill(0)));
   const [current_depth, setCurrentDepth] = useState(2);
   const [current_x, setX] = useState(0);
@@ -14,8 +14,8 @@ export default function UserMagicalSquareGrid() {
 
   // reload MoveTree
   useEffect(() => {
-    const str_tree = sessionStorage.getItem("magical_square_grid_tree")
-    const str_location = sessionStorage.getItem("magical_square_grid_location");
+    const str_tree = localStorage.getItem("magical_square_grid_tree")
+    const str_location = localStorage.getItem("magical_square_grid_location");
     if (str_tree && str_tree !== moves.toString()) {
       const new_moves = MoveTree.fromString(str_tree, str_location || "");
 
@@ -48,8 +48,8 @@ export default function UserMagicalSquareGrid() {
     setCurrentDepth(moves.current.depth + 1);
     setX(last_move.x);
     setY(last_move.y);
-    sessionStorage.setItem("magical_square_grid_tree", moves.toString());
-    sessionStorage.setItem("magical_square_grid_location", moves.current.toString());
+    localStorage.setItem("magical_square_grid_tree", moves.toString());
+    localStorage.setItem("magical_square_grid_location", moves.current.toString());
   }
 
   function cancelCancel() {
@@ -62,8 +62,17 @@ export default function UserMagicalSquareGrid() {
     setCurrentDepth(moves.current.depth + 1);
     setX(next_move.x);
     setY(next_move.y);
-    sessionStorage.setItem("magical_square_grid_tree", moves.toString());
-    sessionStorage.setItem("magical_square_grid_location", moves.current.toString());
+    localStorage.setItem("magical_square_grid_tree", moves.toString());
+    localStorage.setItem("magical_square_grid_location", moves.current.toString());
+  }
+
+  function refresh() {
+    const confirm_text = lang === "fr" ? "Réinitialiser la partie?" : "Reset the game?";
+    if (confirm(confirm_text)) {
+      localStorage.removeItem("magical_square_grid_tree");
+      localStorage.removeItem("magical_square_grid_location");
+      location.reload();
+    }
   }
 
 
@@ -77,8 +86,15 @@ export default function UserMagicalSquareGrid() {
           <Image className="w-10" width={500} height={500} src="/arrow-u-up-right-svgrepo-com.svg" alt="arrow going backward" />
         </button>
       </div>
-      <div className='w-[90%] h-[90%] mx-auto my-5'>
-        <MagicalSquareGrid input_depth={current_depth} input_grid={grid} input_x={current_x} input_y={current_y} input_moves={moves} />
+      <div className='w-[90%] h-[90%] mx-auto my-5 flex flex-row items-center'>
+        <div className="w-12 h-12 ml-5 p-1">
+        </div>
+        <div className='w-[90%] h-[90%] mx-auto my-5'>
+          <MagicalSquareGrid input_depth={current_depth} input_grid={grid} input_x={current_x} input_y={current_y} input_moves={moves} />
+        </div>
+        <button onClick={refresh} type="button" className="flex items-center w-12 h-12 ml-5 focus:outline-none focus:ring-4 focus:ring-sky-300 dark:focus:ring-sky-800 hover:outline-none hover:ring-4 hover:ring-sky-300 dark:hover:ring-sky-800 hover:bg-sky-600 bg-sky-700 p-1 rounded">
+          <Image className="w-10 h-10 mx-auto rotate-270" width={500} height={500} src="/refresh-svgrepo-com.svg" alt="arrow going backward" />
+        </button>
       </div>
     </div>
   );
