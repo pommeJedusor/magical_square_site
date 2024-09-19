@@ -4,7 +4,7 @@ import MagicalSquareGrid from "./magicalSquareGrid";
 import { MoveTree, Node } from "../utils/MoveTree";
 import Image from "next/image"
 
-export default function UserMagicalSquareGrid() {
+export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
   const [grid, setGrid] = useState(Array.from({ length: 10 }, () => Array(10).fill(0)));
   const [current_depth, setCurrentDepth] = useState(2);
   const [current_x, setX] = useState(0);
@@ -67,7 +67,8 @@ export default function UserMagicalSquareGrid() {
   }
 
   function refresh() {
-    if (confirm("Reset the game?")) {
+    const confirm_text = lang === "fr" ? "Réinitialiser la partie?" : "Reset the game?";
+    if (confirm(confirm_text)) {
       sessionStorage.removeItem("magical_square_grid_tree");
       sessionStorage.removeItem("magical_square_grid_location");
       location.reload();
