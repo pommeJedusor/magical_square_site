@@ -14,8 +14,8 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
 
   // reload MoveTree
   useEffect(() => {
-    const str_tree = sessionStorage.getItem("magical_square_grid_tree")
-    const str_location = sessionStorage.getItem("magical_square_grid_location");
+    const str_tree = localStorage.getItem("magical_square_grid_tree")
+    const str_location = localStorage.getItem("magical_square_grid_location");
     if (str_tree && str_tree !== moves.toString()) {
       const new_moves = MoveTree.fromString(str_tree, str_location || "");
 
@@ -48,8 +48,8 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
     setCurrentDepth(moves.current.depth + 1);
     setX(last_move.x);
     setY(last_move.y);
-    sessionStorage.setItem("magical_square_grid_tree", moves.toString());
-    sessionStorage.setItem("magical_square_grid_location", moves.current.toString());
+    localStorage.setItem("magical_square_grid_tree", moves.toString());
+    localStorage.setItem("magical_square_grid_location", moves.current.toString());
   }
 
   function cancelCancel() {
@@ -62,15 +62,15 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
     setCurrentDepth(moves.current.depth + 1);
     setX(next_move.x);
     setY(next_move.y);
-    sessionStorage.setItem("magical_square_grid_tree", moves.toString());
-    sessionStorage.setItem("magical_square_grid_location", moves.current.toString());
+    localStorage.setItem("magical_square_grid_tree", moves.toString());
+    localStorage.setItem("magical_square_grid_location", moves.current.toString());
   }
 
   function refresh() {
     const confirm_text = lang === "fr" ? "Réinitialiser la partie?" : "Reset the game?";
     if (confirm(confirm_text)) {
-      sessionStorage.removeItem("magical_square_grid_tree");
-      sessionStorage.removeItem("magical_square_grid_location");
+      localStorage.removeItem("magical_square_grid_tree");
+      localStorage.removeItem("magical_square_grid_location");
       location.reload();
     }
   }
