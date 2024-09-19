@@ -32,7 +32,7 @@ export default function NavLayout({ lang }: { lang: string }) {
         {urls.map(link => (
           <Link key={link.url} href={`/${lang}${link.url}`} className="mx-5 md:text-xl text-center text-light-grey hover:text-dark-white hover:underline">{link.text}</Link>
         ))}
-        <select onChange={switchLanguage} name="lang" id="lang-select" className='ml-auto mr-5 md:text-xl text-center text-light-grey hover:text-dark-white hover:underline'>
+        <select onChange={switchLanguage} name="lang" id="lang-select" className='ml-auto mr-5 md:text-xl text-center bg-dark-grey text-dark-white border-1 border-light-grey rounded'>
           <option value={languages.current.value}>{languages.current.text}</option>
           <option value={languages.other.value}>{languages.other.text}</option>
         </select>
