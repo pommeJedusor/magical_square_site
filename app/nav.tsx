@@ -7,7 +7,8 @@ export default function NavLayout({ lang }: { lang: string }) {
 
   function switchLanguage(event: ChangeEvent<HTMLSelectElement>) {
     const new_lang = event.target.value;
-    location.href = `/${new_lang}`;
+    const path = location.pathname.slice(3);
+    location.href = `/${new_lang}${path}`;
   }
 
   function valueLanguageToTextLanguage(value: string) {
