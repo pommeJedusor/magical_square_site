@@ -10,12 +10,14 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
   const [current_x, setX] = useState(0);
   const [current_y, setY] = useState(0);
   const [moves, setMoves] = useState(new MoveTree());
+  const [winning_moves, setWinningMoves] = useState({"must_show": true, "moves": [], "reset_moves": reset_winning_moves});
   grid[current_y][current_x] = grid[current_y][current_x] || 1;
 
   // reload MoveTree
   useEffect(() => {
     const str_tree = localStorage.getItem("magical_square_grid_tree")
     const str_location = localStorage.getItem("magical_square_grid_location");
+    reset_winning_moves(current_x, current_y);
     if (str_tree && str_tree !== moves.toString()) {
       const new_moves = MoveTree.fromString(str_tree, str_location || "");
 
@@ -48,6 +50,7 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
     setCurrentDepth(moves.current.depth + 1);
     setX(last_move.x);
     setY(last_move.y);
+    reset_winning_moves(current_x, current_y);
     localStorage.setItem("magical_square_grid_tree", moves.toString());
     localStorage.setItem("magical_square_grid_location", moves.current.toString());
   }
@@ -62,6 +65,7 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
     setCurrentDepth(moves.current.depth + 1);
     setX(next_move.x);
     setY(next_move.y);
+    reset_winning_moves(current_x, current_y);
     localStorage.setItem("magical_square_grid_tree", moves.toString());
     localStorage.setItem("magical_square_grid_location", moves.current.toString());
   }
@@ -74,6 +78,29 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
       location.reload();
     }
   }
+
+  function get_hash(index: number): string{
+      let hash = BigInt(0);
+      for (let y=0;y<10;y++){
+          for (let x=0;x<10;x++){
+              if (grid[y][x]){
+                  const index = y * 10 + x;
+                  hash |=  BigInt(1) << BigInt(index);
+              }
+          }
+      }
+      hash |= BigInt(index) << BigInt(100);
+      return hash.toString();
+  }
+
+  function reset_winning_moves(x: number, y: number): void {
+    const current_index = y * 10 + x;
+    const hash = get_hash(current_index);
+    fetch(`https://api_magical_square.chesspomme.com/${hash}`)
+      .then(response => response.json())
+      .then(response => {setWinningMoves({"must_show": true, "moves": response, "reset_moves": reset_winning_moves})});
+  }
+
 
 
   return (
@@ -90,7 +117,7 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
         <div className="w-12 h-12 ml-5 p-1">
         </div>
         <div className='w-[90%] h-[90%] mx-auto my-5'>
-          <MagicalSquareGrid input_depth={current_depth} input_grid={grid} input_x={current_x} input_y={current_y} input_moves={moves} />
+          <MagicalSquareGrid input_depth={current_depth} input_grid={grid} input_x={current_x} input_y={current_y} input_moves={moves} winning_moves={winning_moves} />
         </div>
         <button onClick={refresh} type="button" className="flex items-center w-12 h-12 ml-5 focus:outline-none focus:ring-4 focus:ring-sky-300 dark:focus:ring-sky-800 hover:outline-none hover:ring-4 hover:ring-sky-300 dark:hover:ring-sky-800 hover:bg-sky-600 bg-sky-700 p-1 rounded">
           <Image className="w-10 h-10 mx-auto rotate-270" width={500} height={500} src="/refresh-svgrepo-com.svg" alt="arrow going backward" />

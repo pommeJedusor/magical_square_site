@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ChangeEvent } from 'react';
 
 export default function NavLayout({ lang }: { lang: string }) {
-  const urls = lang == "fr" ? [{ "url": "/", "text": "Jouer" }, { "url": "/rules", "text": "Règles" }, { "url": "/get_page/10/1", "text": "Voir Les Solutions" }, { "url": "/infos", "text": "À Propos" }] : [{ "url": "/", "text": "Play" }, { "url": "/rules", "text": "Rules" }, { "url": "/get_page/10/1", "text": "See Solutions" }, { "url": "/infos", "text": "About" }];
+  const urls = lang == "fr" ? [{ "url": "/", "text": "Jouer" }, { "url": "/rules", "text": "Règles" }, { "url": "/infos", "text": "À Propos" }] : [{ "url": "/", "text": "Play" }, { "url": "/rules", "text": "Rules" }, { "url": "/infos", "text": "About" }];
 
   function switchLanguage(event: ChangeEvent<HTMLSelectElement>) {
     const new_lang = event.target.value;

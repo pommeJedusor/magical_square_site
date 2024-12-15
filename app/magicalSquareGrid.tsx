@@ -2,6 +2,8 @@
 import { MoveTree } from "../utils/MoveTree";
 import { useEffect, useState } from "react";
 
+type winning_moves_type = {moves: number[], must_show: Boolean, reset_moves: (x: number, y: number) => void};
+
 function isAvailableMove(current_x: number, current_y: number, x: number, y: number): boolean {
   const current_index = current_y * 10 + current_x;
   const index = y * 10 + x;
@@ -17,7 +19,7 @@ function isAvailableMove(current_x: number, current_y: number, x: number, y: num
   return possible_moves.includes(current_index - index);
 }
 
-export default function MagicalSquareGrid({ input_depth, input_grid, input_x, input_y, input_moves }: { input_depth: number, input_grid: Array<Array<number>> | null, input_x: number, input_y: number, input_moves: MoveTree | undefined }) {
+export default function MagicalSquareGrid({ input_depth, input_grid, input_x, input_y, input_moves, winning_moves }: { input_depth: number, input_grid: Array<Array<number>> | null, input_x: number, input_y: number, input_moves: MoveTree | undefined, winning_moves: winning_moves_type }) {
   const [grid, setGrid] = useState(input_grid || Array.from({ length: 10 }, () => Array(10).fill(0)));
   grid[input_y][input_x] = grid[input_y][input_x] || 1;
   const [current_depth, setCurrentDepth] = useState(input_depth);
@@ -45,27 +47,28 @@ export default function MagicalSquareGrid({ input_depth, input_grid, input_x, in
       localStorage.setItem("magical_square_grid_tree", moves.toString());
       localStorage.setItem("magical_square_grid_location", moves.current.toString());
     }
+    winning_moves.reset_moves(x, y);
   }
   return (
     <div className='w-full h-full bg-dark-white flex flex-col'>
       {grid.map((_, index) => (
-        <Row key={index} grid={grid} y={index} current_x={current_x} current_y={current_y} current_depth={current_depth} play_move={play_move} moves={moves} />
+        <Row key={index} grid={grid} y={index} current_x={current_x} current_y={current_y} current_depth={current_depth} play_move={play_move} moves={moves} winning_moves={winning_moves} />
       ))}
     </div>
   );
 }
 
-function Row({ grid, y, current_x, current_y, current_depth, play_move, moves }: { grid: Array<Array<number>>, y: number, current_x: number, current_y: number, current_depth: number, play_move: (x: number, y: number) => void, moves: MoveTree | undefined }) {
+function Row({ grid, y, current_x, current_y, current_depth, play_move, moves, winning_moves }: { grid: Array<Array<number>>, y: number, current_x: number, current_y: number, current_depth: number, play_move: (x: number, y: number) => void, moves: MoveTree | undefined, winning_moves: winning_moves_type }) {
   return (
     <div className={`w-full h-[10%] flex flex-row`}>
       {grid[y].map((_, index) => (
-        <Square key={index} grid={grid} x={index} y={y} current_x={current_x} current_y={current_y} current_depth={current_depth} play_move={play_move} moves={moves} />
+        <Square key={index} grid={grid} x={index} y={y} current_x={current_x} current_y={current_y} current_depth={current_depth} play_move={play_move} moves={moves} winning_moves={winning_moves} />
       ))}
     </div>
   );
 }
 
-function Square({ grid, x, y, current_x, current_y, current_depth, play_move, moves }: { grid: Array<Array<number>>, x: number, y: number, current_x: number, current_y: number, current_depth: number, play_move: (x: number, y: number) => void, moves: MoveTree | undefined }) {
+function Square({ grid, x, y, current_x, current_y, current_depth, play_move, moves, winning_moves }: { grid: Array<Array<number>>, x: number, y: number, current_x: number, current_y: number, current_depth: number, play_move: (x: number, y: number) => void, moves: MoveTree | undefined, winning_moves: winning_moves_type }) {
   const [isHovered, setHovered] = useState(false);
   const square_value = grid[y][x];
   if (square_value > 0 && square_value < 100 && y == moves?.current.y && x == moves?.current.x) {
@@ -79,6 +82,19 @@ function Square({ grid, x, y, current_x, current_y, current_depth, play_move, mo
     return (
       <div className="w-[10%] h-full border text-dark-black flex items-center justify-center xl:text-2xl lg:text-xl sm:text-lg text-xs" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
         {square_value ? square_value : null}
+      </div>
+    );
+  }
+  else if (!isHovered && winning_moves.must_show && winning_moves.moves.includes(y * 10 + x)) {
+    return (
+      <div className="w-[10%] h-full border-4 rounded border-green-500/40 text-dark-black/50 flex items-center justify-center text-2xl cursor-pointer" onMouseEnter={() => setHovered(true)} onClick={() => play_move(x, y)}>
+      </div>
+    );
+  }
+  else if (winning_moves.must_show && winning_moves.moves.includes(y * 10 + x)) {
+    return (
+      <div className="w-[10%] h-full border-4 rounded border-green-500/80 text-dark-black/50 flex items-center justify-center text-2xl cursor-pointer" onMouseLeave={() => setHovered(false)} onClick={() => play_move(x, y)}>
+        {square_value ? square_value : current_depth}
       </div>
     );
   }
