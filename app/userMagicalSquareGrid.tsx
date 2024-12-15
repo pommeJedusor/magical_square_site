@@ -38,7 +38,7 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
       setX(new_moves.current.x);
       setY(new_moves.current.y);
     }
-  }, [moves, grid]);
+  }, [moves, grid, current_x, current_y]);
 
   function cancelMove() {
     if (moves.current.depth <= 1) return;

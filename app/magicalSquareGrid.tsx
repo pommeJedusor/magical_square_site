@@ -2,7 +2,7 @@
 import { MoveTree } from "../utils/MoveTree";
 import { useEffect, useState } from "react";
 
-type winning_moves_type = {moves: number[], must_show: Boolean, reset_moves: (x: number, y: number) => void};
+type winning_moves_type = {moves: number[], must_show: boolean, reset_moves: (x: number, y: number) => void};
 
 function isAvailableMove(current_x: number, current_y: number, x: number, y: number): boolean {
   const current_index = current_y * 10 + current_x;
