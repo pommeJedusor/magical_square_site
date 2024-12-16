@@ -4,20 +4,33 @@ import MagicalSquareGrid from "./magicalSquareGrid";
 import { MoveTree, Node } from "../utils/MoveTree";
 import Image from "next/image"
 
+class Grid{
+    grid: number[][];
+    x: number;
+    y: number;
+    depth: number;
+    setGrid: (grid: Grid) => void;
+    constructor(grid: number[][], x: number, y: number, depth: number, setGrid: (grid: Grid) => void){
+        this.grid = grid;
+        this.x = x;
+        this.y = y;
+        this.depth = depth;
+        this.setGrid = setGrid;
+    }
+}
+
 export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
-  const [grid, setGrid] = useState(Array.from({ length: 10 }, () => Array(10).fill(0)));
-  const [current_depth, setCurrentDepth] = useState(2);
-  const [current_x, setX] = useState(0);
-  const [current_y, setY] = useState(0);
+  const [grid, setGrid] = useState(new Grid(Array.from({ length: 10 }, () => Array(10).fill(0)), 0, 0, 2, () => {}));
   const [moves, setMoves] = useState(new MoveTree());
-  const [winning_moves, setWinningMoves] = useState({"must_show": true, "moves": [], "reset_moves": reset_winning_moves});
-  grid[current_y][current_x] = grid[current_y][current_x] || 1;
+  const [winning_moves, setWinningMoves] = useState({"must_show": false, "moves": [], "reset_moves": reset_winning_moves});
+  grid.grid[grid.y][grid.x] = grid.grid[grid.y][grid.x] || 1;
+  grid.setGrid = setGrid;
 
   // reload MoveTree
   useEffect(() => {
     const str_tree = localStorage.getItem("magical_square_grid_tree")
     const str_location = localStorage.getItem("magical_square_grid_location");
-    reset_winning_moves(current_x, current_y);
+    reset_winning_moves(grid.x, grid.y);
     if (str_tree && str_tree !== moves.toString()) {
       const new_moves = MoveTree.fromString(str_tree, str_location || "");
 
@@ -30,27 +43,23 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
       }
       for (let i = 1; i <= temp_moves.length; i++) {
         const move = temp_moves.at(-i) as Node;
-        grid[move.y][move.x] = i;
+        grid.grid[move.y][move.x] = i;
       }
-      setGrid(grid.slice());
+      setGrid(new Grid(grid.grid, grid.x, grid.y, grid.depth, grid.setGrid));
       setMoves(new_moves);
-      setCurrentDepth(new_moves.current.depth + 1);
-      setX(new_moves.current.x);
-      setY(new_moves.current.y);
     }
-  }, [moves, grid, current_x, current_y]);
+  }, [moves, grid, grid.x, grid.y]);
 
   function cancelMove() {
     if (moves.current.depth <= 1) return;
     let last_move = moves.current;
-    grid[last_move.y][last_move.x] = 0;
+    grid.grid[last_move.y][last_move.x] = 0;
     moves.cancelMove();
     last_move = moves.current;
-    setGrid(grid.slice());
-    setCurrentDepth(moves.current.depth + 1);
-    setX(last_move.x);
-    setY(last_move.y);
-    reset_winning_moves(current_x, current_y);
+    grid.x = last_move.x;
+    grid.y = last_move.y;
+    setGrid(new Grid(grid.grid, grid.x, grid.y, grid.depth - 1, grid.setGrid));
+    reset_winning_moves(grid.x, grid.y);
     localStorage.setItem("magical_square_grid_tree", moves.toString());
     localStorage.setItem("magical_square_grid_location", moves.current.toString());
   }
@@ -60,12 +69,11 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
     const next_move = moves.current.children[moves.current.children.length - 1];
     moves.addMove(next_move.x, next_move.y);
 
-    grid[next_move.y][next_move.x] = next_move.depth;
-    setGrid(grid.slice());
-    setCurrentDepth(moves.current.depth + 1);
-    setX(next_move.x);
-    setY(next_move.y);
-    reset_winning_moves(current_x, current_y);
+    grid.grid[next_move.y][next_move.x] = next_move.depth;
+    grid.x = next_move.x;
+    grid.y = next_move.y;
+    setGrid(new Grid(grid.grid, grid.x, grid.y, grid.depth + 1, grid.setGrid));
+    reset_winning_moves(grid.x, grid.y);
     localStorage.setItem("magical_square_grid_tree", moves.toString());
     localStorage.setItem("magical_square_grid_location", moves.current.toString());
   }
@@ -83,7 +91,7 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
       let hash = BigInt(0);
       for (let y=0;y<10;y++){
           for (let x=0;x<10;x++){
-              if (grid[y][x]){
+              if (grid.grid[y][x]){
                   const index = y * 10 + x;
                   hash |=  BigInt(1) << BigInt(index);
               }
@@ -98,9 +106,14 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
     const hash = get_hash(current_index);
     fetch(`https://api_magical_square.chesspomme.com/${hash}`)
       .then(response => response.json())
-      .then(response => {setWinningMoves({"must_show": true, "moves": response, "reset_moves": reset_winning_moves})});
+      .then(response => {winning_moves.moves = response; setWinningMoves({"must_show": winning_moves.must_show, "moves": response, "reset_moves": reset_winning_moves})});
   }
 
+  function toggle_cheat(): void{
+        winning_moves.must_show = !winning_moves.must_show;
+        setWinningMoves({"must_show": winning_moves.must_show, "moves": winning_moves.moves, "reset_moves": reset_winning_moves});
+        reset_winning_moves(grid.x, grid.y);
+  }
 
 
   return (
@@ -114,10 +127,11 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
         </button>
       </div>
       <div className='w-[90%] h-[90%] mx-auto my-5 flex flex-row items-center'>
-        <div className="w-12 h-12 ml-5 p-1">
-        </div>
+        <button onClick={toggle_cheat} type="button" className="flex items-center w-12 h-12 mr-5 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-800 hover:outline-none hover:ring-4 hover:ring-yellow-300 dark:hover:ring-yellow-800 hover:bg-yellow-600 bg-yellow-700 p-1 rounded">
+          <Image className="w-10 h-10 mx-auto" width={500} height={500} src="/star-svgrepo-com.svg" alt="arrow going backward" />
+        </button>
         <div className='w-[90%] h-[90%] mx-auto my-5'>
-          <MagicalSquareGrid input_depth={current_depth} input_grid={grid} input_x={current_x} input_y={current_y} input_moves={moves} winning_moves={winning_moves} />
+          <MagicalSquareGrid grid={grid} input_moves={moves} winning_moves={winning_moves} />
         </div>
         <button onClick={refresh} type="button" className="flex items-center w-12 h-12 ml-5 focus:outline-none focus:ring-4 focus:ring-sky-300 dark:focus:ring-sky-800 hover:outline-none hover:ring-4 hover:ring-sky-300 dark:hover:ring-sky-800 hover:bg-sky-600 bg-sky-700 p-1 rounded">
           <Image className="w-10 h-10 mx-auto rotate-270" width={500} height={500} src="/refresh-svgrepo-com.svg" alt="arrow going backward" />
