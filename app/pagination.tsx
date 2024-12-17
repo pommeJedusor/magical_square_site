@@ -34,10 +34,9 @@ export default function Pagination({ page_size, page_index, lang }: { page_size:
         <div className="flex flex-row justify-center mt-5">
           <p className="text-dark-white mr-3 text-lg">Solutions par page : </p>
           <select value={page_size} onChange={switchSolutionByPage} name="lang" id="lang-select" className='d:text-xl text-center bg-normal-grey text-dark-white border-1 border-light-grey rounded'>
-            <option value="5">5</option>
+            <option value="4">4</option>
             <option value="10">10</option >
             <option value="50">50</option >
-            <option value="100">100</option >
           </select >
         </div>
       </>
@@ -54,10 +53,9 @@ export default function Pagination({ page_size, page_index, lang }: { page_size:
         <div className="flex flex-row justify-center mt-5">
           <p className="text-dark-white mr-3 text-lg">Solutions by page : </p>
           <select value={page_size} onChange={switchSolutionByPage} name="lang" id="lang-select" className='d:text-xl text-center bg-normal-grey text-dark-white border-1 border-light-grey rounded'>
-            <option value="5">5</option>
+            <option value="4">4</option>
             <option value="10">10</option >
             <option value="50">50</option >
-            <option value="100">100</option >
           </select >
         </div>
       </>
