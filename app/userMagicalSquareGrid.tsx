@@ -45,6 +45,10 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
         const move = temp_moves.at(-i) as Node;
         grid.grid[move.y][move.x] = i;
       }
+
+      grid.depth = (str_location || "").split(";").length + 1;
+      grid.x = temp_moves.at(0)?.x || grid.x;
+      grid.y = temp_moves.at(0)?.y || grid.y;
       setGrid(new Grid(grid.grid, grid.x, grid.y, grid.depth, grid.setGrid));
       setMoves(new_moves);
     }
