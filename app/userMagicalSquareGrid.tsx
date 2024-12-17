@@ -109,8 +109,15 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
     const current_index = y * 10 + x;
     const hash = get_hash(current_index);
     fetch(`https://api_magical_square.chesspomme.com/get_moves/${hash}`)
-      .then(response => response.json())
-      .then(response => {winning_moves.moves = response; setWinningMoves({"must_show": winning_moves.must_show, "moves": response, "reset_moves": reset_winning_moves})});
+      .then(response => {
+        if (!response.ok)return null;
+        return response.json();
+      })
+      .then(response => {
+          if (response === null)return;
+          winning_moves.moves = response;
+          setWinningMoves({"must_show": winning_moves.must_show, "moves": response, "reset_moves": reset_winning_moves})
+      });
   }
 
   function toggle_cheat(): void{
