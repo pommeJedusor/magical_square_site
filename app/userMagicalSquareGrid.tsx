@@ -104,7 +104,7 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
   function reset_winning_moves(x: number, y: number): void {
     const current_index = y * 10 + x;
     const hash = get_hash(current_index);
-    fetch(`https://api_magical_square.chesspomme.com/${hash}`)
+    fetch(`https://api_magical_square.chesspomme.com/get_moves/${hash}`)
       .then(response => response.json())
       .then(response => {winning_moves.moves = response; setWinningMoves({"must_show": winning_moves.must_show, "moves": response, "reset_moves": reset_winning_moves})});
   }
