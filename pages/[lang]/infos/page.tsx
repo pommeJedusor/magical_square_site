@@ -1,15 +1,8 @@
-import { Metadata } from "next";
-import NavLayout from "../../nav";
+import NavLayout from "../../../components/nav";
 import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "Site Info",
-  description: "Describe the site and gives interesting infos",
-};
 
 export default async function Page({ params }: { params: { lang: string } }) {
   if (params.lang == "fr") {
-    metadata.title = "Information sur le site";
     return (
       <div>
         <NavLayout lang={params.lang} />

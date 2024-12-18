@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react";
-import MagicalSquareGrid from "./magicalSquareGrid";
+import MagicalSquareGrid from "../components/magicalSquareGrid";
 import { MoveTree, Node } from "../utils/MoveTree";
 import Image from "next/image"
 

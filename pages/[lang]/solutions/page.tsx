@@ -1,11 +1,42 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import ArrowUp from '@/app/arrowUp';
-import MagicalSquareGrid from '@/app/magicalSquareGrid';
-import NavLayout from '@/app/nav';
-import Pagination from '@/app/pagination';
+import ArrowUp from '@/pages/arrowUp';
+import MagicalSquareGrid from '@/components/magicalSquareGrid';
+import NavLayout from '@/components/nav';
+import Pagination from '@/components/pagination';
 import Link from 'next/link';
+
+//export async function getStaticPaths() {
+//  return {
+//    paths: [
+//      { params: { lang: 'fr' } },
+//      { params: { lang: 'en' } },
+//    ],
+//    fallback: false,
+//  };
+//}
+//
+//export async function getStaticProps({ params }: { params: { lang: string } }) {
+//  const { lang } = params;
+//
+//  return {
+//    props: {
+//      lang,
+//    },
+//  };
+//}
+//
+class PageInfo{
+    size: number;
+    index: number;
+    setPageInfo: (PageInfo: PageInfo) => void;
+    constructor(size: number, index: number, setPageInfo: (PageInfo: PageInfo) => void){
+        this.size = size;
+        this.index = index;
+        this.setPageInfo = setPageInfo;
+    }
+}
 
 function format_number(number: string): string {
   if (number.length <= 3) return number;
@@ -52,22 +83,23 @@ class Grid {
   }
 }
 
-export default function Page({ params }: { params: { page_size: string, page_index: string, lang: string } }) {
-  const { page_size, page_index, lang } = params;
+export default function Page({ params }: { params: { lang: string } }) {
+  const { lang } = params;
+  const [page_info, setPageInfo] = useState(new PageInfo(10, 1, ()=>{}));
+  page_info.setPageInfo = setPageInfo;
 
   const [solutions, setSolutions] = useState<Array<{ id: number, path: Array<number> }> | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  console.log(page_size);
 
   useEffect(() => {
     const loadSolutions = async () => {
-      if (Number(page_size) > 100) {
+      if (Number(page_info.size) > 100) {
         setErrorMessage("You can't ask for more than 100 solutions by page");
         return;
       }
 
       try {
-        const fetchedSolutions = await fetchSolutions(page_size, page_index);
+        const fetchedSolutions = await fetchSolutions(page_info.size.toString(), page_info.index.toString());
         setSolutions(fetchedSolutions);
       } catch (error) {
         setErrorMessage("Didn't achieve to retrieve the data you were looking for :(");
@@ -75,7 +107,7 @@ export default function Page({ params }: { params: { page_size: string, page_ind
     };
 
     loadSolutions();
-  }, [page_size, page_index]);
+  }, [page_info]);
 
   if (errorMessage) {
     return (
@@ -103,14 +135,14 @@ export default function Page({ params }: { params: { page_size: string, page_ind
       <div>
         <NavLayout lang={lang} />
         <h1 className='text-light-grey text-center text-2xl mt-5'>
-          {lang === "fr" ? `Solutions pour la page ${Number(page_index)}` : `Solutions for page ${Number(page_index)}`}
+          {lang === "fr" ? `Solutions pour la page ${page_info.index}` : `Solutions for page ${page_info.index}`}
         </h1>
-        <Pagination page_size={Number(page_size)} page_index={Number(page_index)} lang={lang} />
+        <Pagination page_info={page_info} lang={lang} />
         <div className='w-[97vw] flex flex-row flex-wrap justify-around my-5'>
           {solutions.map((solution, index) => (
             <div key={index} className='lg:w-[34vw] lg:h-[34vw] w-[68vw] h-[68vw] my-5'>
               <h3 className='text-dark-white mt-5 text-xl'>
-                {format_number(((Number(page_index) - 1) * Number(page_size) + index + 1).toString())}.
+                {format_number(((page_info.index - 1) * page_info.size + index + 1).toString())}.
               </h3>
               <MagicalSquareGrid key={solution.id} grid={getGridFromPath(solution.path)} input_moves={undefined} winning_moves={{ moves: [], must_show: false, reset_moves: () => { } }} />
             </div>

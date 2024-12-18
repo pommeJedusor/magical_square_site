@@ -1,14 +1,7 @@
-import { Metadata } from "next";
-import NavLayout from "../../nav";
-
-export const metadata: Metadata = {
-  title: "Rules",
-  description: "Explain the rules of the magical square",
-};
+import NavLayout from "../../../components/nav";
 
 export default async function Page({ params }: { params: { lang: string } }) {
   if (params.lang == "fr") {
-    metadata.title = "Règles"
     return (
       <div>
         <NavLayout lang={params.lang} />
