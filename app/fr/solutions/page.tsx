@@ -1,32 +1,12 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import ArrowUp from '@/pages/arrowUp';
+import ArrowUp from '@/app/arrowUp';
 import MagicalSquareGrid from '@/components/magicalSquareGrid';
 import NavLayout from '@/components/nav';
 import Pagination from '@/components/pagination';
 import Link from 'next/link';
 
-//export async function getStaticPaths() {
-//  return {
-//    paths: [
-//      { params: { lang: 'fr' } },
-//      { params: { lang: 'en' } },
-//    ],
-//    fallback: false,
-//  };
-//}
-//
-//export async function getStaticProps({ params }: { params: { lang: string } }) {
-//  const { lang } = params;
-//
-//  return {
-//    props: {
-//      lang,
-//    },
-//  };
-//}
-//
 class PageInfo{
     size: number;
     index: number;
@@ -83,8 +63,7 @@ class Grid {
   }
 }
 
-export default function Page({ params }: { params: { lang: string } }) {
-  const { lang } = params;
+export default function Page() {
   const [page_info, setPageInfo] = useState(new PageInfo(10, 1, ()=>{}));
   page_info.setPageInfo = setPageInfo;
 
@@ -112,7 +91,7 @@ export default function Page({ params }: { params: { lang: string } }) {
   if (errorMessage) {
     return (
       <div>
-        <NavLayout lang={lang} />
+        <NavLayout lang={"fr"} />
         <h1 className='text-light-grey text-center text-2xl mt-5'>{errorMessage}</h1>
         <p className='text-light-grey text-center text-2xl mt-5'>
           Either come back to the previous url or go to <Link href="/">Home</Link>
@@ -124,7 +103,7 @@ export default function Page({ params }: { params: { lang: string } }) {
   if (!solutions) {
     return (
       <div>
-        <NavLayout lang={lang} />
+        <NavLayout lang={"fr"} />
         <h1 className='text-light-grey text-center text-2xl mt-5'>Loading...</h1>
       </div>
     );
@@ -153,5 +132,5 @@ export default function Page({ params }: { params: { lang: string } }) {
     );
   };
 
-  return renderContent(lang);
+  return renderContent("fr");
 }
