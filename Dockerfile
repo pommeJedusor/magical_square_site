@@ -1,6 +1,6 @@
 FROM node:22-alpine3.19 AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
 
@@ -10,19 +10,11 @@ COPY ./ ./
 
 RUN npm run build
 
-FROM node:22-alpine3.19 AS runtime
 
-WORKDIR /usr/src/app
+FROM nginx:alpine
 
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/.next ./.next
-COPY --from=builder /usr/src/app/public ./public
-COPY --from=builder /usr/src/app/package*.json ./
+COPY --from=builder /app/out ./usr/share/nginx/html
 
-EXPOSE 3000
+EXPOSE 80
 
-RUN addgroup -S nextjs && adduser -S nextjs -G nextjs
-USER nextjs
-
-CMD ["npm", "run", "start"]
-
+CMD ["nginx", "-g", "daemon off;"]
