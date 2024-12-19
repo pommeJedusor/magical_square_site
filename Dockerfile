@@ -14,6 +14,7 @@ RUN npm run build
 FROM nginx:alpine
 
 COPY --from=builder /app/out ./usr/share/nginx/html
+COPY ./favicon.ico ./usr/share/nginx/html/favicon.ico
 
 COPY default.conf /etc/nginx/conf.d/
 
