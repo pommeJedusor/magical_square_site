@@ -126,28 +126,40 @@ export default function UserMagicalSquareGrid({ lang }: { lang: string }) {
         reset_winning_moves(grid.x, grid.y);
   }
 
-
   return (
-    <div className='w-full h-full mx-auto my-5'>
-      <div className="w-32 h-10% mx-auto">
-        <button onClick={cancelMove} type="button" className="mx-2 focus:outline-none focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 hover:outline-none hover:ring-4 hover:ring-green-300 dark:hover:ring-green-800 hover:bg-green-600 bg-green-700 p-1 rounded">
-          <Image className="w-10" width={500} height={500} src="/arrow-u-up-left-svgrepo-com.svg" alt="arrow going backward" />
-        </button>
-        <button onClick={cancelCancel} type="button" className="mx-2 focus:outline-none focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800 hover:outline-none hover:ring-4 hover:ring-red-300 dark:hover:ring-red-800 hover:bg-red-600 bg-red-700 p-1 rounded">
-          <Image className="w-10" width={500} height={500} src="/arrow-u-up-right-svgrepo-com.svg" alt="arrow going backward" />
-        </button>
-      </div>
-      <div className='w-[90%] h-[90%] mx-auto my-5 flex flex-row items-center'>
-        <button onClick={toggle_cheat} type="button" className="flex items-center w-12 h-12 mr-5 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-800 hover:outline-none hover:ring-4 hover:ring-yellow-300 dark:hover:ring-yellow-800 hover:bg-yellow-600 bg-yellow-700 p-1 rounded">
-          <Image className="w-10 h-10 mx-auto" width={500} height={500} src="/star-svgrepo-com.svg" alt="arrow going backward" />
-        </button>
-        <div className='w-[90%] h-[90%] mx-auto my-5'>
-          <MagicalSquareGrid grid={grid} input_moves={moves} winning_moves={winning_moves} />
-        </div>
-        <button onClick={refresh} type="button" className="flex items-center w-12 h-12 ml-5 focus:outline-none focus:ring-4 focus:ring-sky-300 dark:focus:ring-sky-800 hover:outline-none hover:ring-4 hover:ring-sky-300 dark:hover:ring-sky-800 hover:bg-sky-600 bg-sky-700 p-1 rounded">
-          <Image className="w-10 h-10 mx-auto rotate-270" width={500} height={500} src="/refresh-svgrepo-com.svg" alt="arrow going backward" />
-        </button>
-      </div>
+  <div className='w-full h-full mx-auto my-5'>
+    <div className="w-64 md:w-32 h-10% mx-auto">
+      <button onClick={cancelMove} type="button" className="mx-2 focus:outline-none focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 hover:outline-none hover:ring-4 hover:ring-green-300 dark:hover:ring-green-800 hover:bg-green-600 bg-green-700 p-1 rounded">
+        <Image className="w-10" width={500} height={500} src="/arrow-u-up-left-svgrepo-com.svg" alt="arrow going backward" />
+      </button>
+
+
+      <button onClick={toggle_cheat} type="button" className="mx-2 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-800 hover:outline-none hover:ring-4 hover:ring-yellow-300 dark:hover:ring-yellow-800 hover:bg-yellow-600 bg-yellow-700 p-1 rounded md:hidden">
+        <Image className="w-10 h-10 mx-auto" width={500} height={500} src="/star-svgrepo-com.svg" alt="toggle cheat" />
+      </button>
+      <button onClick={refresh} type="button" className="mx-2 focus:outline-none focus:ring-4 focus:ring-sky-300 dark:focus:ring-sky-800 hover:outline-none hover:ring-4 hover:ring-sky-300 dark:hover:ring-sky-800 hover:bg-sky-600 bg-sky-700 p-1 rounded md:hidden">
+        <Image className="w-10 h-10 mx-auto rotate-270" width={500} height={500} src="/refresh-svgrepo-com.svg" alt="refresh" />
+      </button>
+
+      <button onClick={cancelCancel} type="button" className="mx-2 focus:outline-none focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800 hover:outline-none hover:ring-4 hover:ring-red-300 dark:hover:ring-red-800 hover:bg-red-600 bg-red-700 p-1 rounded">
+        <Image className="w-10" width={500} height={500} src="/arrow-u-up-right-svgrepo-com.svg" alt="arrow going forward" />
+      </button>
     </div>
-  );
+
+    <div className='w-[90%] h-[90%] mx-auto my-5 flex flex-row items-center'>
+      <button onClick={toggle_cheat} type="button" className="flex items-center w-12 h-12 mr-5 hidden md:block focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-800 hover:outline-none hover:ring-4 hover:ring-yellow-300 dark:hover:ring-yellow-800 hover:bg-yellow-600 bg-yellow-700 p-1 rounded">
+        <Image className="w-10 h-10 mx-auto" width={500} height={500} src="/star-svgrepo-com.svg" alt="toggle cheat" />
+      </button>
+
+      <div className='w-[90%] h-[90%] mx-auto my-5'>
+        <MagicalSquareGrid grid={grid} input_moves={moves} winning_moves={winning_moves} />
+      </div>
+
+      <button onClick={refresh} type="button" className="flex items-center w-12 h-12 ml-5 hidden md:block focus:outline-none focus:ring-4 focus:ring-sky-300 dark:focus:ring-sky-800 hover:outline-none hover:ring-4 hover:ring-sky-300 dark:hover:ring-sky-800 hover:bg-sky-600 bg-sky-700 p-1 rounded">
+        <Image className="w-10 h-10 mx-auto rotate-270" width={500} height={500} src="/refresh-svgrepo-com.svg" alt="refresh" />
+      </button>
+    </div>
+  </div>
+);
+
 }
