@@ -8,7 +8,7 @@ export default async function Page() {
       <h1 className="text-dark-white text-center text-4xl my-5">Informations</h1>
       <h2 className="text-dark-white w-10/12 md:w-4/12 mx-auto text-3xl my-5">Algorithme de résolution</h2>
       <p className="w-10/12 md:w-4/12 mx-auto text-xl text-dark-white">
-        J'ai codé un algorithme complex en python qui peut trouver jusqu'à 33 938 944 solutions en seulement quelques minutes.
+        J'ai codé un algorithme complex en python qui peut trouver jusqu'à 33 938 944 solutions en seulement quelques secondes.
         Si les récursives, les tables de transpositions et les opérations binaires ne vous font pas peur, voici <Link target="_blank" href="https://github.com/pommeJedusor/magical_square" className="text-light-grey hover:text-white hover:underline">le code</Link>
       </p>
       <h2 className="text-dark-white w-10/12 md:w-4/12 mx-auto text-3xl my-5">Le site</h2>
