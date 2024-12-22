@@ -53,7 +53,7 @@ function SolutionGrid({ page_index }: {page_index: number}){
     const [path, setPath] = useState<Array<number>|null>(null);
     useEffect(() => {
         const getSolution = async () => {
-            const response = await fetch(`https://api_magical_square.chesspomme.com/get_path/${page_index}`);
+            const response = await fetch(`https://api-magical-square.chesspomme.com/get_path/${page_index}`);
             const json = await response.json() as Array<number>;
             setPath(json);
         }
