@@ -9,7 +9,7 @@ export default async function Page() {
       <h2 className="text-dark-white w-10/12 md:w-4/12 mx-auto text-3xl my-5">Algorithme de résolution</h2>
       <p className="w-10/12 md:w-4/12 mx-auto text-xl text-dark-white">
         J'ai codé un algorithme complex en python qui peut trouver jusqu'à 33 938 944 solutions en seulement quelques secondes.
-        Si les récursives, les tables de transpositions et les opérations binaires ne vous font pas peur, voici <Link target="_blank" href="https://github.com/pommeJedusor/magical_square" className="text-light-grey hover:text-white hover:underline">le code</Link>
+        Si les récursives, les tables de transpositions et les opérations binaires ne vous font pas peur, voici <Link target="_blank" href="https://github.com/pommeJedusor/magical_square_api" className="text-light-grey hover:text-white hover:underline">le code</Link>
       </p>
       <h2 className="text-dark-white w-10/12 md:w-4/12 mx-auto text-3xl my-5">Le site</h2>
       <p className="w-10/12 md:w-4/12 mx-auto text-xl text-dark-white"> J'ai codé ce site en utilisant react, next.js, typescript et tailwindcss. si vous voulez le voir, voici <Link target="_blank" href="https://github.com/pommeJedusor/magical_square_site" className="text-light-grey hover:text-white hover:underline">le code</Link> </p>
