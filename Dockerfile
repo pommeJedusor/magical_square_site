@@ -11,7 +11,7 @@ COPY ./ ./
 RUN npm run build
 
 
-FROM nginx:alpine
+FROM nginx:1-alpine-slim
 
 COPY --from=builder /app/out ./usr/share/nginx/html
 COPY ./favicon.ico ./usr/share/nginx/html/favicon.ico
