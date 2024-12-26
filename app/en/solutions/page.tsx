@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ArrowUp from '@/app/arrowUp';
 import MagicalSquareGrid from '@/components/magicalSquareGrid';
 import NavLayout from '@/components/nav';
@@ -67,7 +67,7 @@ function SolutionGrid({ page_index }: {page_index: number}){
     );
 }
 
-function updatePageInfoFromLocalStorage(page_info: PageInfo){
+function getPageInfoFromLocalStorage(page_info: PageInfo): PageInfo{
     const nb_by_page = Number(localStorage.getItem("magical_square_nb_solutions_by_page")) || 10;
     const page = Number(localStorage.getItem("magical_square_solution_page")) || 1;
     return new PageInfo(nb_by_page, page, page_info.setPageInfo);
@@ -78,20 +78,19 @@ function savePageParameters(PageInfo: PageInfo): void{
     localStorage.setItem("magical_square_solution_page", String(PageInfo.index));
 }
 
-function getPageInfoWrapper(setPageInfo: (PageInfo: PageInfo) => void): (PageInfo: PageInfo) => void {
-    return (PageInfo: PageInfo) => {
-        savePageParameters(PageInfo);
-        setPageInfo(PageInfo);
-    }
-}
-
 export default function Page() {
   const [page_info, setPageInfo] = useState(new PageInfo(10, 1, ()=>{}));
-  page_info.setPageInfo = getPageInfoWrapper(setPageInfo);
+  page_info.setPageInfo = setPageInfo;
+  const is_first_render = useRef(true);
 
   useEffect(()=>{
-      page_info.setPageInfo(updatePageInfoFromLocalStorage(page_info))
-  }, []);
+      if (is_first_render.current){
+        page_info.setPageInfo(getPageInfoFromLocalStorage(page_info))
+        is_first_render.current = false;
+        return;
+      }
+      savePageParameters(page_info);
+  }, [page_info]);
 
   const renderContent = (lang: string) => {
     return (
