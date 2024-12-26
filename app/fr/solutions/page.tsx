@@ -67,9 +67,31 @@ function SolutionGrid({ page_index }: {page_index: number}){
     );
 }
 
+function updatePageInfoFromLocalStorage(page_info: PageInfo){
+    const nb_by_page = Number(localStorage.getItem("magical_square_nb_solutions_by_page")) || 10;
+    const page = Number(localStorage.getItem("magical_square_solution_page")) || 1;
+    return new PageInfo(nb_by_page, page, page_info.setPageInfo);
+}
+
+function savePageParameters(PageInfo: PageInfo): void{
+    localStorage.setItem("magical_square_nb_solutions_by_page", String(PageInfo.size));
+    localStorage.setItem("magical_square_solution_page", String(PageInfo.index));
+}
+
+function getPageInfoWrapper(setPageInfo: (PageInfo: PageInfo) => void): (PageInfo: PageInfo) => void {
+    return (PageInfo: PageInfo) => {
+        savePageParameters(PageInfo);
+        setPageInfo(PageInfo);
+    }
+}
+
 export default function Page() {
   const [page_info, setPageInfo] = useState(new PageInfo(10, 1, ()=>{}));
-  page_info.setPageInfo = setPageInfo;
+  page_info.setPageInfo = getPageInfoWrapper(setPageInfo);
+
+  useEffect(()=>{
+      page_info.setPageInfo(updatePageInfoFromLocalStorage(page_info))
+  }, []);
 
   const renderContent = (lang: string) => {
     return (
