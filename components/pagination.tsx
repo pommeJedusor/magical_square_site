@@ -11,8 +11,6 @@ class PageInfo{
     }
 }
 
-
-
 export default function Pagination({ page_info, lang }: { page_info: PageInfo, lang: string }) {
   const max_page = Math.ceil(33938944 / page_info.size);
 
@@ -32,7 +30,7 @@ export default function Pagination({ page_info, lang }: { page_info: PageInfo, l
       <>
         <div className="flex flex-row justify-center mt-5">
           <form onSubmit={(event) => { event.preventDefault(); location.href = `./${page_info.index}` }} >
-            <input name='page_index' type='number' min="1" max={max_page} value={page_info.index} className="text-black mx-2 w-24" onChange={(event) => page_info.setPageInfo(new PageInfo(page_info.size, Math.min(Number(event.target.value), max_page), page_info.setPageInfo))} />
+            <input name='page_index' type='number' min="1" max={max_page} value={page_info.index} className="text-black mx-2 w-24" onChange={(event) => page_info.setPageInfo(new PageInfo(page_info.size, Math.min(Number(event.target.value), max_page) || 1, page_info.setPageInfo))} />
           </form>
         </div>
         <div className="flex flex-row justify-center mt-5">
@@ -50,7 +48,7 @@ export default function Pagination({ page_info, lang }: { page_info: PageInfo, l
       <>
         <div className="flex flex-row justify-center mt-5">
           <form onSubmit={(event) => { event.preventDefault(); location.href = `./${page_info.index}` }} >
-            <input name='page_index' type='number' min="1" max={max_page} value={page_info.index} className="text-black mx-2 w-24" onChange={(event) => page_info.setPageInfo(new PageInfo(page_info.size, Math.min(Number(event.target.value), max_page), page_info.setPageInfo))} />
+            <input name='page_index' type='number' min="1" max={max_page} value={page_info.index} className="text-black mx-2 w-24" onChange={(event) => page_info.setPageInfo(new PageInfo(page_info.size, Math.min(Number(event.target.value), max_page) || 1, page_info.setPageInfo))} />
           </form>
         </div>
         <div className="flex flex-row justify-center mt-5">
