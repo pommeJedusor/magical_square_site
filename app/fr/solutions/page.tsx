@@ -55,6 +55,7 @@ function SolutionGrid({ page_index }: {page_index: number}){
         const getSolution = async () => {
             const response = await fetch(`https://api-magical-square.chesspomme.com/get_path/${page_index}`);
             const json = await response.json() as Array<number>;
+            console.log(json)
             setPath(json);
         }
         getSolution();
@@ -101,19 +102,26 @@ export default function Page() {
         </h1>
         <Pagination page_info={page_info} lang={lang} />
         <div className='w-[97vw] flex flex-row flex-wrap justify-around my-5'>
-          {Array(page_info.size).fill(1).map((solution, index) => (
-            <div key={index} className='lg:w-[34vw] lg:h-[34vw] w-[68vw] h-[68vw] my-5'>
-              <h3 className='text-dark-white mt-5 text-xl'>
-                {format_number(((page_info.index - 1) * page_info.size + index + 1).toString())}.
-              </h3>
-              <SolutionGrid key={index} page_index={(page_info.index - 1) * page_info.size + index} />
-            </div>
-          ))}
+          {Array(page_info.size).fill(1).map((solution, index) => {
+            const page_index = (page_info.index - 1) * page_info.size + index;
+            if (page_index <= 33938943) {
+              return (
+                <div key={index} className='lg:w-[34vw] lg:h-[34vw] w-[68vw] h-[68vw] my-5'>
+                  <h3 className='text-dark-white mt-5 text-xl'>
+                    {format_number((page_index + 1).toString())}.
+                  </h3>
+                  <SolutionGrid page_index={page_index} />
+                </div>
+              );
+            }
+            return null;
+          })}
         </div>
         <ArrowUp />
       </div>
     );
   };
+
 
   return renderContent("fr");
 }
